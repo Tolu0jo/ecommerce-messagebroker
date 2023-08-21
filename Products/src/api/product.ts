@@ -1,10 +1,12 @@
 import ProductService from "../services/product-service";
 import express, { Response, Request, NextFunction } from "express";
 import userAuth from "./middleware/auth";
-import { PublishCustomerEvent, PublishShoppingEvent } from "../utils";
+import { PublishMesage } from "../utils";
+import { CUSTOMER_BINDING_KEY, SHOPPING_BINDING_KEY } from "../config";
+import { Channel } from "amqplib";
 
 
-export const Product = (app: express.Application) => {
+export const Product = (app: express.Application,channel: Channel | undefined) => {
   const service = new ProductService();
   app.post(
     "/add",
@@ -100,7 +102,8 @@ app.put(
       "ADD_TO_WISHLIST" 
     );
 
-    PublishCustomerEvent(JSON.stringify(data));
+    // PublishCustomerEvent(JSON.stringify(data));
+    PublishMesage(channel,CUSTOMER_BINDING_KEY,JSON.stringify(data));
     res.status(200).json(data.data.product);
   }
 );
@@ -116,7 +119,8 @@ app.delete("/wishlist/:id",userAuth, async (req: Request | any, res: Response, n
     { productId:id, qty: req.body.qty},
     "REMOVE_FROM_WISHLIST" 
   );
-  PublishCustomerEvent(JSON.stringify(data));
+  // PublishCustomerEvent(JSON.stringify(data));
+  PublishMesage(channel,CUSTOMER_BINDING_KEY,JSON.stringify(data));
   res.status(200).json(data.data.product);
   } catch (error) {
     console.log(error);
@@ -137,8 +141,10 @@ app.delete("/wishlist/:id",userAuth, async (req: Request | any, res: Response, n
           "ADD_TO_CART"
         );
    
-        PublishCustomerEvent(JSON.stringify(data));
-        PublishShoppingEvent(JSON.stringify(data));
+        // PublishCustomerEvent(JSON.stringify(data));
+        PublishMesage(channel,CUSTOMER_BINDING_KEY,JSON.stringify(data));
+        // PublishShoppingEvent(JSON.stringify(data));
+        PublishMesage(channel,SHOPPING_BINDING_KEY,JSON.stringify(data));
   
         const response ={
           product:data.data.product,
@@ -163,9 +169,11 @@ app.delete("/wishlist/:id",userAuth, async (req: Request | any, res: Response, n
       "REMOVE_FROM_CART" 
     );
     
-    PublishCustomerEvent(JSON.stringify(data));
-    PublishShoppingEvent(JSON.stringify(data));
-
+    // PublishCustomerEvent(JSON.stringify(data));
+    // PublishShoppingEvent(JSON.stringify(data));
+    PublishMesage(channel,CUSTOMER_BINDING_KEY,JSON.stringify(data));
+    // PublishShoppingEvent(JSON.stringify(data));
+    PublishMesage(channel,SHOPPING_BINDING_KEY,JSON.stringify(data));
     const response ={
       product:data.data.product,
       unit:data.data.qty,

@@ -1,10 +1,13 @@
 import CustomerService from "../services/customer-service";
 import express, { Response, Request, NextFunction } from "express";
 import userAuth from "./middleware/auth";
+import { Channel } from "amqplib";
+import { SubscribeMessage } from "../utils";
+import { CUSTOMER_BINDING_KEY } from "../config";
 
-export const Customer = (app: express.Application) => {
+export const Customer = (app: express.Application,channel:Channel | undefined) => {
   const service = new CustomerService();
-
+  SubscribeMessage(channel,service,CUSTOMER_BINDING_KEY);
   //SIGNUP
   app.post(
     "/signup",
