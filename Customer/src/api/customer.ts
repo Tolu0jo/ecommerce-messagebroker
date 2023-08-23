@@ -5,9 +5,9 @@ import { Channel } from "amqplib";
 import { SubscribeMessage } from "../utils";
 import { CUSTOMER_BINDING_KEY } from "../config";
 
-export const Customer = (app: express.Application,channel:Channel | undefined) => {
+export const Customer = async (app: express.Application,channel:Channel | undefined) => {
   const service = new CustomerService();
-  SubscribeMessage(channel,service,CUSTOMER_BINDING_KEY);
+ await SubscribeMessage(channel,service);
   //SIGNUP
   app.post(
     "/signup",

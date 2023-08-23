@@ -15,7 +15,7 @@ export const expressApp = async (app: express.Application,channel: Channel | und
   // appEvent(app)
   
   //Api
-  Customer(app,channel)
+ await Customer(app,channel)
 
 
 

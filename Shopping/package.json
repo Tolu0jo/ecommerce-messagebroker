@@ -6,7 +6,7 @@
   "scripts": {
     "start:dev": "npx nodemon",
     "build": "tsc",
-    "start:prod": "NODE_ENV=prod yarn build && node dist/index.js"
+    "start:prod": "yarn build && node dist/index.js"
   },
   "dependencies": {
     "amqplib": "^0.10.3",

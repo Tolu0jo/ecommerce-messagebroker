@@ -39,6 +39,7 @@ return channel;
 export const PublishMesage = async(channel:any,binding_key:string,message:any)=>{
   try {
     await channel.publish(EXCHANGE_NAME,binding_key,Buffer.from(message));
+
   } catch (error) {
     console.log(error);
   }
@@ -46,15 +47,15 @@ export const PublishMesage = async(channel:any,binding_key:string,message:any)=>
 //subscribe messages
 export const SubscribeMessage= async(channel:any,service:any)=>{
 try {
-  const appQueue = await channel.assetQueue(QUEUE_NAME);
+  const appQueue = await channel.assertQueue(QUEUE_NAME);
   channel.bindQueue(appQueue.queue,EXCHANGE_NAME,CUSTOMER_BINDING_KEY);
   channel.consume(appQueue.queue,(data:any)=>{
-    console.log("recieved data: ")
-    console.log(data.content.toString());
+    console.log("recieved data: IN PRODUCT")
+    // console.log(data.content.toString());
     channel.ack(data)
   })
 } catch (error) {
-  
+  console.log(error)
 }
   
 }

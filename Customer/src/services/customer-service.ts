@@ -161,7 +161,7 @@ class CustomerService {
     return cartResult;
   }
 
-  async SubscriberEvents (payload: any) {
+  async SubscriberEvents  (payload: any) {
     payload = JSON.parse(payload);
 
     const { event, data } = payload;
