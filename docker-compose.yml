@@ -19,7 +19,7 @@ services:
       - "nosql-db"
     volumes:
       - .:/app
-      - /app/Products/node_modules
+      - /app/products/node_modules
 
     env_file:
       - ./Products/.env.dev
@@ -35,7 +35,7 @@ services:
       - "nosql-db"
     volumes:
       - .:/app
-      - /app/Shopping/node_modules
+      - /app/shopping/node_modules
     env_file:
       - ./Shopping/.env.dev
   customer:
@@ -51,7 +51,7 @@ services:
 
     volumes:
       - .:/app/
-      - /app/Customer/node_modules
+      - /app/customer/node_modules
     env_file:
       - ./Customer/.env.dev
   nginx-proxy:

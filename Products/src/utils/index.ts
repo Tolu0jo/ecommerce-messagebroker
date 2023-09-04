@@ -27,10 +27,10 @@ export const validateSignature = async (req: Request | any) => {
 //create channel
 export const CreateChannel = async()=>{
   try {
-    const connection = await amqp.connect(MESSAGE_BROKER_URL);
+  const connection = await amqp.connect(MESSAGE_BROKER_URL);
   const channel = await connection.createChannel();
   await channel.assertExchange (EXCHANGE_NAME,"direct",{ durable: true });
-return channel;
+ return channel;
   } catch (error) {
     console.log(error);
   }
@@ -44,6 +44,7 @@ export const PublishMesage = async(channel:any,binding_key:string,message:any)=>
     console.log(error);
   }
 }
+
 //subscribe messages
 export const SubscribeMessage= async(channel:any,service:any)=>{
 try {
@@ -56,6 +57,4 @@ try {
   })
 } catch (error) {
   console.log(error)
-}
-  
-}
+} }

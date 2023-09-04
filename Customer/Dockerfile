@@ -1,16 +1,31 @@
-FROM node:18-alpine
+FROM node:18-alpine as transpilation
 
-WORKDIR /app/customer
-
-COPY package.json ./
-
-RUN yarn
+WORKDIR /transpile
 
 COPY . .
 
+RUN yarn
+
+RUN yarn tsc
+#stage 2
+
+FROM  node:18-alpine
+
+WORKDIR /app/customer
+
+COPY --from=transpilation /transpile/dist  ./dist
+
+COPY .env.dev .
+
+COPY package.json .
+
+RUN yarn --prod
+
+COPY yarn.lock .
+
 EXPOSE 8001
 
-CMD ["yarn","start:prod"]
+CMD ["node","dist/index.js"]
 
 
  
