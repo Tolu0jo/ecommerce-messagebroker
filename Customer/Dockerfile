@@ -25,7 +25,4 @@ COPY yarn.lock .
 
 EXPOSE 8001
 
-CMD ["node","dist/index.js"]
-
-
- 
+CMD ["node", "dist/index.js"]

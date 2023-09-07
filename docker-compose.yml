@@ -7,6 +7,22 @@ services:
     container_name: nosql-db
     volumes:
       - ./db/:/data/db
+  customer:
+    build:
+      dockerfile: Dockerfile
+      context: ./Customer
+    container_name: customer
+    ports:
+      - "8001:8001"
+    restart: always
+    depends_on:
+      - "nosql-db"
+
+    volumes:
+      - .:/app/
+      - /app/customer/node_modules
+    env_file:
+      - ./Customer/.env.dev
   products:
     build:
       dockerfile: Dockerfile
@@ -38,22 +54,7 @@ services:
       - /app/shopping/node_modules
     env_file:
       - ./Shopping/.env.dev
-  customer:
-    build:
-      dockerfile: Dockerfile
-      context: ./Customer
-    container_name: customer
-    ports:
-      - "8001:8001"
-    restart: always
-    depends_on:
-      - "nosql-db"
 
-    volumes:
-      - .:/app/
-      - /app/customer/node_modules
-    env_file:
-      - ./Customer/.env.dev
   nginx-proxy:
     build:
       dockerfile: Dockerfile
