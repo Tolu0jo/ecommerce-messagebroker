@@ -143,7 +143,7 @@ app.delete("/wishlist/:id",userAuth, async (req: Request | any, res: Response, n
         );
    
 
-      //  await PublishMesage(channel,CUSTOMER_BINDING_KEY,JSON.stringify(data));
+      await PublishMesage(channel,CUSTOMER_BINDING_KEY,JSON.stringify(data));
      
        await PublishMesage(channel,SHOPPING_BINDING_KEY,JSON.stringify(data));
   
