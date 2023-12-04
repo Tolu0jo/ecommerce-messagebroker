@@ -56,6 +56,7 @@ export const CreateChannel = async () => {
     const connection = await amqp.connect(MESSAGE_BROKER_URL);
     const channel = await connection.createChannel();
     await channel.assertExchange(EXCHANGE_NAME, "direct", { durable: true });
+    await channel.assertQueue(QUEUE_NAME);
     return channel;
   } catch (error) {
     console.log(error);

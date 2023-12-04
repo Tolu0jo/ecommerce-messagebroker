@@ -6,6 +6,7 @@ import { Channel } from "amqplib";
 
 
 export const expressApp = async (app: express.Application,channel: Channel | undefined) => {
+ 
   app.use(express.json());
   
   app.use(logger("dev"));
@@ -13,9 +14,9 @@ export const expressApp = async (app: express.Application,channel: Channel | und
   app.use(cors());
  
 
-  appEvent(app)
+  //appEvent(app)
   //Api
-   Shopping(app,channel)
+   await Shopping(app,channel)
 
 };
  

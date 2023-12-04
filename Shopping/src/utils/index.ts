@@ -2,7 +2,6 @@ import {hash,genSalt} from "bcryptjs"
 import {verify,sign} from "jsonwebtoken"
 import { APP_SECRET, EXCHANGE_NAME, MESSAGE_BROKER_URL, QUEUE_NAME, SHOPPING_BINDING_KEY } from "../config"
 import amqp from "amqplib"
-import axios from "axios"
 export const GenerateSalt= async()=>{
     return await genSalt()
 }
@@ -50,8 +49,10 @@ export const CreateChannel = async()=>{
   try {
     const connection = await amqp.connect(MESSAGE_BROKER_URL);
   const channel = await connection.createChannel();
+  
   await channel.assertExchange (EXCHANGE_NAME,"direct",{ durable: true });
-return channel;
+  
+  return channel;
   } catch (error) {
     console.log(error);
   }
@@ -67,7 +68,7 @@ export const PublishMesage = async(channel:any,binding_key:string,message:any)=>
 //subscribe messages
 export const SubscribeMessage= async(channel:any,service:any)=>{
 try {
-  const appQueue = await channel.assetQueue(QUEUE_NAME);
+  const appQueue = await channel.assertQueue(QUEUE_NAME);
   channel.bindQueue(appQueue.queue,EXCHANGE_NAME,SHOPPING_BINDING_KEY);
   channel.consume(appQueue.queue,(data:any)=>{
     console.log("recieved data:IN SHOPPING ")

@@ -7,7 +7,7 @@ COPY . .
 RUN yarn
 
 RUN yarn tsc
-#stage 2
+
 
 FROM  node:18-alpine
 
